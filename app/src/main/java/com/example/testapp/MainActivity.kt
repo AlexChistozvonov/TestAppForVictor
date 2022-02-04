@@ -1,5 +1,6 @@
 package com.example.testapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,7 +41,13 @@ class MainActivity : AppCompatActivity() {
               call: Call<MutableList<UserModel>>,
               response: Response<MutableList<UserModel>>
           ) {
-              adapter = RecyclerAdapter(baseContext, response.body() as MutableList<UserModel>)
+              adapter = RecyclerAdapter(response.body() as MutableList<UserModel>) { id ->
+
+                  val intent = Intent(this@MainActivity, DetailsActivity::class.java)
+                  intent.putExtra("id", id)
+                  startActivity(intent)
+
+              }
               adapter.notifyDataSetChanged()
               binding.recyclerView.adapter = adapter
           }

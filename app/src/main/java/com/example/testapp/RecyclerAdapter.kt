@@ -7,26 +7,37 @@ import android.widget.ImageView
 
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
-class RecyclerAdapter(private val context: Context, private val listMain: MutableList<UserModel>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(private val listMain: MutableList<UserModel>, private val listener: (position : String?) -> Unit) : RecyclerView.Adapter<RecyclerAdapter.UserViewHolder>() {
 
 
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+   inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         val tvLogin: TextView = itemView.findViewById(R.id.tvLogin)
         val tvId: TextView = itemView.findViewById(R.id.tvId)
         val ivAvatar: ImageView = itemView.findViewById((R.id.ivAvatar))
+
+        init{
+            ivAvatar.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+            listener.invoke(listMain[adapterPosition].id)
+
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_rv, parent, false)
-        return ViewHolder(itemView)
+        return UserViewHolder(itemView)
     }
 
     override fun getItemCount() = listMain.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
 
+        Glide.with(holder.itemView.context).load(listMain[position].avatar_url).into(holder.ivAvatar)
         holder.tvLogin.text = listMain[position].login
         holder.tvId.text = listMain[position].id
     }
