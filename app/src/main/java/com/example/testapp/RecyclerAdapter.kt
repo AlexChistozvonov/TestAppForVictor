@@ -1,5 +1,6 @@
 package com.example.testapp
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 class RecyclerAdapter(private val listMain: MutableList<UserModel>, private val listener: (position : String?) -> Unit) : RecyclerView.Adapter<RecyclerAdapter.UserViewHolder>() {
-
 
 
    inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
