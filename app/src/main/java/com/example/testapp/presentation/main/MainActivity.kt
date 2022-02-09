@@ -1,16 +1,19 @@
-package com.example.testapp
+package com.example.testapp.presentation.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.testapp.Common.retrofitService
+import com.example.testapp.*
+import com.example.testapp.data.main.MainRepository
+import com.example.testapp.data.main.MainViewModelFactory
 import com.example.testapp.databinding.ActivityMainBinding
-import kotlinx.coroutines.*
+import com.example.testapp.domain.UserService
+import com.example.testapp.presentation.details.DetailsActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var mService: UserService
     lateinit var layoutManager: LinearLayoutManager
     lateinit var adapter: RecyclerAdapter
-    var job: Job? = null
     private lateinit var vm: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,26 +30,30 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val retrofitService = Common.retrofitService
         val mainRepository = MainRepository(retrofitService)
-        vm = ViewModelProvider(this,  MainViewModelFactory(mainRepository)).get(MainViewModel::class.java)
+        vm = ViewModelProvider(
+            this,
+            MainViewModelFactory(mainRepository)
+        ).get(MainViewModel::class.java)
 
         mService = Common.retrofitService
         binding.recyclerView.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
 
-
-        vm.userList.observe(this) {
-            val result = mService.getUserInfo()
-            adapter = RecyclerAdapter(result.body() as MutableList<UserModel>) { id ->
-                val intent = Intent(this@MainActivity, DetailsActivity::class.java)
-                intent.putExtra("id", id)
-                startActivity(intent)
-
-            }
-            adapter.notifyDataSetChanged()
-            binding.recyclerView.adapter = adapter
+        adapter = RecyclerAdapter(emptyList()) { id ->
+            val intent = Intent(this@MainActivity, DetailsActivity::class.java)
+            intent.putExtra("id", id)
+            startActivity(intent)
         }
 
+        binding.recyclerView.adapter = adapter
+
+        vm.userList.observe(this) {
+
+            adapter.setUser(it)
+            adapter.notifyDataSetChanged()
+
+        }
 
         vm.errorMessage.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -63,32 +69,5 @@ class MainActivity : AppCompatActivity() {
 
         vm.getAllUserList()
 
-
-        //getAllUserList()
-
     }
-
-
-
-//    private fun getAllUserList() {
-//        job = CoroutineScope(Dispatchers.IO).launch {
-//            val result = mService.getUserInfo()
-//            if (result.isSuccessful) {
-//                CoroutineScope(Dispatchers.Main).launch {
-//                    adapter = RecyclerAdapter(result.body() as MutableList<UserModel>) { id ->
-//                        val intent = Intent(this@MainActivity, DetailsActivity::class.java)
-//                        intent.putExtra("id", id)
-//                        startActivity(intent)
-//
-//                    }
-//                    adapter.notifyDataSetChanged()
-//                    binding.recyclerView.adapter = adapter
-//                }
-//            } else {
-//                Log.e("Error", result.errorBody().toString())
-//            }
-//        }
-//
-//    }
-
 }
