@@ -8,11 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.testapp.*
+import com.example.testapp.data.Common
 import com.example.testapp.data.main.MainRepository
-import com.example.testapp.data.main.MainViewModelFactory
 import com.example.testapp.databinding.ActivityMainBinding
 import com.example.testapp.domain.UserService
+import com.example.testapp.presentation.RecyclerAdapter
 import com.example.testapp.presentation.details.DetailsActivity
 
 

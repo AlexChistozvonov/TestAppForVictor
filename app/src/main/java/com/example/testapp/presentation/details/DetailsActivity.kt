@@ -7,8 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.testapp.Common
-import com.example.testapp.data.details.DetailsViewModelFactory
+import com.example.testapp.data.Common
 import com.example.testapp.data.details.DetailsRepository
 import com.example.testapp.databinding.ActivityDetailsBinding
 

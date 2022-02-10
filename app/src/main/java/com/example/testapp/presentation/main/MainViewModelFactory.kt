@@ -1,8 +1,8 @@
-package com.example.testapp.data.main
+package com.example.testapp.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.testapp.presentation.main.MainViewModel
+import com.example.testapp.data.main.MainRepository
 
 class MainViewModelFactory constructor(private val repository: MainRepository) :
     ViewModelProvider.Factory {

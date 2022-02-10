@@ -4,7 +4,7 @@ package com.example.testapp.presentation.main
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.testapp.Common
+import com.example.testapp.data.Common
 import com.example.testapp.domain.UserModel
 import com.example.testapp.domain.UserService
 import com.example.testapp.data.main.MainRepository
